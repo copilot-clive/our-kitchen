@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Bernhard & Marna's kitchen — a recomp + BP-aware meal plan, built around 2,114 kcal / 180C / 70F / 191P." />
+<title>The Kitchen — Bernhard & Marna's Menu</title>
+<style>
+  /* -------- Reset + tokens -------- */
+  *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  :root {
+    --bg: #FAF7F2;
+    --bg-soft: #F2EDE3;
+    --card: #FFFFFF;
+    --ink: #1A2E1F;
+    --ink-soft: #5C6B5E;
+    --line: #E8E3D8;
+    --line-soft: #F0EAD9;
+    --sage: #4A7C59;
+    --sage-deep: #2D5A3D;
+    --beet: #8B3A62;
+    --beet-soft: #FBE9F1;
+    --teal: #2C5F8A;
+    --amber: #C08A2E;
+    --amber-soft: #FBF1DF;
+    --red-soft: #FCE6E2;
+    --shadow: 0 1px 2px rgba(26,46,31,.04), 0 8px 24px rgba(26,46,31,.06);
+    --shadow-lift: 0 2px 4px rgba(26,46,31,.06), 0 16px 40px rgba(26,46,31,.10);
+    --radius: 14px;
+    --radius-sm: 8px;
+    --serif: ui-serif, "Iowan Old Style", "Apple Garamond", Georgia, Cambria, serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --maxw: 1180px;
+  }
+  body {
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--ink);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3,h4 { font-family: var(--serif); letter-spacing: -0.01em; line-height: 1.15; color: var(--ink); }
+  h1 { font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 600; }
+  h2 { font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 600; }
+  h3 { font-size: 1.2rem; font-weight: 600; }
+  h4 { font-size: 1rem; font-weight: 600; }
+  p { color: var(--ink-soft); }
+  a { color: var(--sage-deep); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  img { max-width: 100%; display: block; }
+  button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+  /* -------- Layout -------- */
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+  @media (max-width: 600px) { .wrap { padding: 0 18px; } }
+  section { padding: 64px 0; }
+  section + section { border-top: 1px solid var(--line-soft); }
+  .eyebrow { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sage); margin-bottom: 12px; }
+  .lead { font-size: 1.1rem; color: var(--ink-soft); max-width: 720px; }
+
+  /* -------- Top nav -------- */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(250,247,242,0.92);
+    backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px; gap: 16px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-family: var(--serif); font-weight: 600; font-size: 1.05rem; color: var(--ink); }
+  .brand-dot { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--sage), var(--beet)); display: inline-block; }
+  .nav-links { display: flex; gap: 6px; flex-wrap: wrap; }
+  .nav-links a {
+    font-size: 0.9rem; padding: 6px 12px; border-radius: 999px; color: var(--ink-soft);
+  }
+  .nav-links a:hover { background: var(--bg-soft); text-decoration: none; color: var(--ink); }
+  @media (max-width: 880px) {
+    .nav-links { display: none; }
+  }
+
+  /* -------- Hero -------- */
+  .hero { padding: 88px 0 64px; }
+  .hero-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 56px; align-items: center; }
+  @media (max-width: 880px) { .hero-grid { grid-template-columns: 1fr; gap: 32px; } }
+  .hero h1 { margin-bottom: 18px; }
+  .hero .lead { margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px; border-radius: 999px;
+    font-size: 0.82rem; font-weight: 500;
+    background: var(--card); border: 1px solid var(--line); color: var(--ink-soft);
+  }
+  .pill.accent-sage { color: var(--sage-deep); border-color: rgba(74,124,89,.3); background: rgba(74,124,89,.05); }
+  .pill.accent-beet { color: var(--beet); border-color: rgba(139,58,98,.25); background: var(--beet-soft); }
+  .pill.accent-amber { color: var(--amber); border-color: rgba(192,138,46,.3); background: var(--amber-soft); }
+
+  /* macro ring */
+  .ring-card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow);
+  }
+  .ring-wrap { display: flex; align-items: center; justify-content: center; }
+  .ring {
+    --p: 33; --f: 30; --c: 37;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: conic-gradient(
+      var(--sage) 0% 33%,
+      var(--amber) 33% 63%,
+      var(--beet) 63% 100%
+    );
+    position: relative;
+    display: grid; place-items: center;
+  }
+  .ring::before {
+    content: ""; position: absolute; inset: 14px;
+    background: var(--card); border-radius: 50%;
+  }
+  .ring-inner { position: relative; text-align: center; }
+  .ring-inner .big { font-family: var(--serif); font-size: 2.4rem; font-weight: 600; color: var(--ink); }
+  .ring-inner .small { font-size: 0.85rem; color: var(--ink-soft); }
+  .ring-legend { display: flex; gap: 14px; justify-content: center; margin-top: 18px; flex-wrap: wrap; }
+  .ring-legend > div { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--ink-soft); }
+  .swatch { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+  .swatch.p { background: var(--sage); } .swatch.f { background: var(--amber); } .swatch.c { background: var(--beet); }
+
+  /* -------- Rules / cards grids -------- */
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  @media (max-width: 880px) { .grid-3 { grid-template-columns: 1fr; } .grid-2 { grid-template-columns: 1fr; } }
+
+  .rule-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
+  .rule-card .num { font-family: var(--serif); font-size: 1.4rem; color: var(--beet); font-weight: 600; margin-bottom: 8px; }
+  .rule-card h4 { margin-bottom: 4px; }
+  .rule-card p { font-size: 0.92rem; }
+
+  /* -------- Day slots table -------- */
+  .slot-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--line); }
+  .slot-table th, .slot-table td { text-align: left; padding: 14px 18px; border-bottom: 1px solid var(--line-soft); font-size: 0.95rem; }
+  .slot-table th { background: var(--bg-soft); font-weight: 600; color: var(--ink); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .slot-table tr:last-child td { border-bottom: none; }
+  .slot-table tr.totals td { background: var(--bg-soft); font-weight: 600; color: var(--ink); }
+  .slot-table .num { font-variant-numeric: tabular-nums; }
+  @media (max-width: 700px) {
+    .slot-table th, .slot-table td { padding: 10px 12px; font-size: 0.85rem; }
+  }
+
+  /* -------- Week table -------- */
+  .week-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: var(--radius); border: 1px solid var(--line); background: var(--card); box-shadow: var(--shadow); }
+  .week-table { width: 100%; border-collapse: collapse; min-width: 640px; }
+  .week-table th, .week-table td { padding: 14px 14px; text-align: left; border-bottom: 1px solid var(--line-soft); font-size: 0.9rem; vertical-align: middle; }
+  .week-table th { background: var(--bg-soft); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink); }
+  .week-table .day { font-family: var(--serif); font-weight: 600; color: var(--ink); }
+  .week-table .train { font-size: 0.8rem; color: var(--sage); }
+  .week-table .meal-ids { font-variant-numeric: tabular-nums; }
+  .week-table tr:last-child td { border-bottom: none; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.72rem; font-weight: 600; }
+  .badge.run { background: rgba(44,95,138,.1); color: var(--teal); }
+  .badge.cardio { background: rgba(74,124,89,.12); color: var(--sage-deep); }
+  .badge.rest { background: var(--bg-soft); color: var(--ink-soft); }
+  .badge.flex { background: rgba(192,138,46,.15); color: var(--amber); }
+
+  /* -------- Catalog -------- */
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+  .filter-btn {
+    padding: 8px 16px; border-radius: 999px; font-size: 0.88rem;
+    background: var(--card); border: 1px solid var(--line); color: var(--ink-soft);
+    transition: all 0.15s;
+  }
+  .filter-btn:hover { border-color: var(--sage); color: var(--sage-deep); }
+  .filter-btn.active { background: var(--sage-deep); color: white; border-color: var(--sage-deep); }
+  .filter-btn .count { opacity: 0.6; margin-left: 4px; font-size: 0.78rem; }
+
+  .meal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; }
+  @media (max-width: 600px) { .meal-grid { grid-template-columns: 1fr; } }
+  .meal {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 22px; box-shadow: var(--shadow); transition: box-shadow 0.2s, transform 0.2s;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .meal:hover { box-shadow: var(--shadow-lift); transform: translateY(-2px); }
+  .meal-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .meal-id { font-family: var(--serif); font-size: 0.85rem; color: var(--sage); font-weight: 600; letter-spacing: 0.04em; }
+  .meal-name { font-family: var(--serif); font-size: 1.15rem; font-weight: 600; color: var(--ink); margin-top: 2px; }
+  .star { color: var(--amber); font-size: 0.95rem; }
+  .slot-tag {
+    font-size: 0.7rem; font-weight: 600; padding: 3px 8px; border-radius: 999px;
+    background: var(--bg-soft); color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .macro-bar { display: flex; gap: 0; height: 5px; border-radius: 3px; overflow: hidden; background: var(--bg-soft); }
+  .macro-bar > div { transition: width 0.3s; }
+  .mb-p { background: var(--sage); }
+  .mb-f { background: var(--amber); }
+  .mb-c { background: var(--beet); }
+  .macros { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .macro {
+    text-align: center; padding: 8px 4px;
+    background: var(--bg-soft); border-radius: var(--radius-sm);
+    font-size: 0.82rem; font-variant-numeric: tabular-nums;
+  }
+  .macro strong { display: block; font-family: var(--serif); font-size: 1rem; color: var(--ink); }
+  .macro.kcal strong { color: var(--ink); }
+  .macro.p strong { color: var(--sage-deep); }
+  .macro.f strong { color: var(--amber); }
+  .macro.c strong { color: var(--beet); }
+  .macro span { font-size: 0.68rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.04em; }
+  .ingredients { font-size: 0.92rem; color: var(--ink-soft); line-height: 1.6; }
+  .ingredients strong { color: var(--ink); font-weight: 600; }
+  .tag-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag {
+    font-size: 0.74rem; padding: 3px 8px; border-radius: 6px;
+    background: var(--bg-soft); color: var(--ink-soft); font-weight: 500;
+  }
+  .tag.k { background: rgba(74,124,89,.1); color: var(--sage-deep); }
+  .tag.na { background: rgba(74,124,89,.1); color: var(--sage-deep); }
+  .tag.nitrate { background: rgba(139,58,98,.1); color: var(--beet); }
+  .tag.omega { background: rgba(44,95,138,.1); color: var(--teal); }
+  .tag.flav { background: rgba(139,58,98,.08); color: var(--beet); }
+  .tag.mg { background: rgba(74,124,89,.1); color: var(--sage-deep); }
+  .tag.ca { background: rgba(74,124,89,.1); color: var(--sage-deep); }
+  .tag.satfat { background: rgba(192,138,46,.15); color: var(--amber); }
+  .tag.sodium-flag { background: var(--red-soft); color: #B23A24; }
+  .meal-prep { font-size: 0.82rem; color: var(--ink-soft); font-style: italic; }
+  .meal-prep strong { color: var(--ink); font-style: normal; font-weight: 600; }
+  .meal-rule { font-size: 0.82rem; padding: 8px 12px; background: var(--amber-soft); border-radius: var(--radius-sm); color: var(--ink); border-left: 3px solid var(--amber); }
+  .meal-note { font-size: 0.82rem; color: var(--ink-soft); }
+
+  /* -------- Sodium tracker -------- */
+  .na-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); }
+  .na-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--line-soft); }
+  .na-row:last-child { border-bottom: none; }
+  .na-meter { width: 100%; height: 12px; background: var(--bg-soft); border-radius: 999px; overflow: hidden; margin-top: 10px; }
+  .na-meter > div { height: 100%; background: linear-gradient(to right, var(--sage), var(--amber), var(--beet)); }
+
+  /* -------- Shopping list -------- */
+  .shop-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  @media (max-width: 700px) { .shop-grid { grid-template-columns: 1fr; } }
+  .shop-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 24px; box-shadow: var(--shadow);
+  }
+  .shop-card h3 { margin-bottom: 14px; color: var(--sage-deep); }
+  .shop-list { list-style: none; }
+  .shop-list li { padding: 8px 0; border-bottom: 1px solid var(--line-soft); font-size: 0.92rem; color: var(--ink); display: flex; align-items: flex-start; gap: 10px; }
+  .shop-list li:last-child { border-bottom: none; }
+  .shop-list label { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; flex: 1; }
+  .shop-list input[type="checkbox"] { margin-top: 4px; cursor: pointer; accent-color: var(--sage); }
+  .shop-list li.checked label { text-decoration: line-through; color: var(--ink-soft); }
+
+  /* -------- Info blocks -------- */
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 700px) { .info-grid { grid-template-columns: 1fr; } }
+  .info-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
+  .info-card.tinted { background: var(--beet-soft); border-color: rgba(139,58,98,.15); }
+  .info-card.amber { background: var(--amber-soft); border-color: rgba(192,138,46,.2); }
+  .info-card h3 { margin-bottom: 12px; }
+  .info-card ul { padding-left: 22px; color: var(--ink-soft); font-size: 0.92rem; }
+  .info-card li { margin-bottom: 8px; line-height: 1.55; }
+  .info-card li strong { color: var(--ink); }
+
+  /* -------- Footer -------- */
+  footer { padding: 48px 0; text-align: center; color: var(--ink-soft); font-size: 0.85rem; border-top: 1px solid var(--line-soft); }
+  footer p { margin: 4px 0; color: var(--ink-soft); }
+
+  /* -------- Modal -------- */
+  .modal-backdrop {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(26,46,31,0.55);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: flex-start; justify-content: center;
+    padding: 5vh 20px;
+    overflow-y: auto;
+  }
+  .modal-backdrop.open { display: flex; animation: fadein 0.18s ease-out; }
+  @keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+  .modal {
+    background: var(--card); border-radius: var(--radius);
+    width: 100%; max-width: 600px;
+    box-shadow: 0 24px 64px rgba(26,46,31,0.25);
+    position: relative;
+    animation: slideup 0.22s cubic-bezier(.2,.7,.3,1);
+  }
+  @keyframes slideup { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .modal-close {
+    position: absolute; top: 14px; right: 14px; z-index: 2;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--bg-soft); color: var(--ink);
+    display: grid; place-items: center;
+    font-size: 1.4rem; line-height: 1;
+    transition: background 0.15s;
+  }
+  .modal-close:hover { background: var(--line); }
+  .modal-body { padding: 32px 28px; }
+  .modal-head { margin-bottom: 18px; padding-right: 40px; }
+  .modal .meal-id { font-size: 0.85rem; margin-bottom: 4px; }
+  .modal .meal-name { font-size: 1.5rem; line-height: 1.2; }
+  .modal .slot-tag { margin-top: 8px; }
+  .modal-section { margin-top: 22px; }
+  .modal-section h4 {
+    font-family: var(--sans); font-size: 0.78rem;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--sage); font-weight: 600; margin-bottom: 10px;
+  }
+  .modal .macros { margin-bottom: 14px; }
+  .modal .ingredients { font-size: 0.95rem; line-height: 1.7; }
+  .modal-steps { list-style: none; counter-reset: step; padding: 0; }
+  .modal-steps li {
+    counter-increment: step;
+    position: relative;
+    padding: 12px 0 12px 44px;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: 0.95rem; color: var(--ink); line-height: 1.55;
+  }
+  .modal-steps li:last-child { border-bottom: none; }
+  .modal-steps li::before {
+    content: counter(step);
+    position: absolute; left: 0; top: 12px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--sage-deep); color: white;
+    font-family: var(--serif); font-size: 0.9rem; font-weight: 600;
+    display: grid; place-items: center;
+  }
+  .modal-meta {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    padding: 14px 18px; background: var(--bg-soft); border-radius: var(--radius-sm);
+    font-size: 0.85rem; color: var(--ink-soft);
+  }
+  .modal-meta strong { color: var(--ink); }
+  .meal { cursor: pointer; }
+  .meal:focus-visible { outline: 2px solid var(--sage); outline-offset: 3px; }
+  .meal-link {
+    display: inline-block;
+    color: var(--sage-deep);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 6px;
+    transition: background 0.15s;
+  }
+  .meal-link:hover { background: rgba(74,124,89,.1); text-decoration: none; }
+  @media (max-width: 600px) {
+    .modal-backdrop { padding: 12px; }
+    .modal-body { padding: 26px 20px; }
+    .modal .meal-name { font-size: 1.3rem; }
+    .modal-steps li { padding-left: 38px; font-size: 0.92rem; }
+    .modal-steps li::before { width: 24px; height: 24px; font-size: 0.82rem; top: 12px; }
+  }
+
+  /* -------- Print -------- */
+  @media print {
+    .nav, .filters, footer { display: none; }
+    section { padding: 24px 0; page-break-inside: avoid; }
+    .meal, .shop-card { box-shadow: none; border: 1px solid #ccc; }
+    body { background: white; }
+  }
+
+  /* -------- Mobile-first refinements -------- */
+  @media (max-width: 880px) {
+    section { padding: 48px 0; }
+    .hero { padding: 56px 0 40px; }
+    .nav-links {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      margin: 0 -18px;
+      padding: 0 18px;
+      gap: 4px;
+    }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links a {
+      white-space: nowrap;
+      padding: 8px 14px;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .nav-inner { gap: 12px; }
+    .brand { flex-shrink: 0; font-size: 0.95rem; }
+    .brand-dot { width: 24px; height: 24px; }
+  }
+
+  @media (max-width: 600px) {
+    :root { --radius: 12px; }
+    section { padding: 40px 0; }
+    .hero { padding: 40px 0 32px; }
+    .hero h1 { letter-spacing: -0.02em; }
+    .lead { font-size: 1rem; }
+    .eyebrow { font-size: 0.72rem; }
+
+    .ring-card { padding: 24px 18px; }
+    .ring { width: 180px; height: 180px; }
+    .ring::before { inset: 12px; }
+    .ring-inner .big { font-size: 2rem; }
+    .ring-legend { gap: 10px; font-size: 0.8rem; }
+
+    .rule-card { padding: 18px; }
+    .rule-card .num { font-size: 1.2rem; }
+
+    .grid-3, .grid-2, .info-grid { gap: 12px; }
+
+    .meal { padding: 18px; gap: 12px; }
+    .meal-name { font-size: 1.05rem; }
+    .meal-id { font-size: 0.78rem; }
+    .macros { gap: 5px; }
+    .macro { padding: 6px 2px; }
+    .macro strong { font-size: 0.9rem; }
+    .macro span { font-size: 0.6rem; letter-spacing: 0.02em; }
+    .ingredients { font-size: 0.88rem; }
+    .tag { font-size: 0.7rem; padding: 2px 7px; }
+    .tag-row { gap: 5px; }
+
+    .filters { gap: 6px; margin-bottom: 18px; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; margin-left: -18px; margin-right: -18px; padding-left: 18px; padding-right: 18px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .filters::-webkit-scrollbar { display: none; }
+    .filter-btn { padding: 8px 14px; font-size: 0.82rem; flex-shrink: 0; }
+
+    .na-card { padding: 20px 18px; }
+    .na-row { padding: 10px 0; font-size: 0.92rem; }
+    .na-row strong { font-size: 0.95rem; }
+
+    .shop-card { padding: 18px; }
+    .shop-list li { padding: 10px 0; }
+    .shop-list input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; }
+
+    .info-card { padding: 20px; }
+    .info-card ul { padding-left: 18px; }
+
+    .slot-table th, .slot-table td { padding: 10px 10px; font-size: 0.82rem; }
+    .week-table th, .week-table td { padding: 10px 10px; font-size: 0.82rem; }
+
+    .hero-meta { gap: 8px; }
+    .pill { font-size: 0.78rem; padding: 5px 10px; }
+  }
+
+  @media (max-width: 380px) {
+    .wrap { padding: 0 14px; }
+    h1 { font-size: 1.75rem; }
+    .ring { width: 160px; height: 160px; }
+    .ring-inner .big { font-size: 1.8rem; }
+    .macros { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* Better touch targets on touch devices */
+  @media (hover: none) and (pointer: coarse) {
+    .filter-btn, .nav-links a, .shop-list label { min-height: 40px; display: inline-flex; align-items: center; }
+    .meal:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <div class="brand"><span class="brand-dot"></span>The Kitchen</div>
+    <div class="nav-links">
+      <a href="#targets">Targets</a>
+      <a href="#rules">Rules</a>
+      <a href="#day">The Day</a>
+      <a href="#week">The Week</a>
+      <a href="#meals">Meals</a>
+      <a href="#shop">Shop</a>
+      <a href="#cook">Cook</a>
+      <a href="#out">Out & About</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">Bernhard &amp; Marna · Doha · 2026</div>
+        <h1>A kitchen built for fat-loss <em style="font-style: italic; color: var(--sage);">and</em> a calmer heart.</h1>
+        <p class="lead">A 28-week recomp menu calibrated to 2,114 kcal a day, layered with DASH-style blood-pressure science. Thirty-two meals, one default week, one shop on Sunday. Built so it actually gets cooked.</p>
+        <div class="hero-meta" style="margin-top: 28px;">
+          <span class="pill accent-sage">🎯 80 kg / 15% BF by 1 Dec 2026</span>
+          <span class="pill accent-beet">🩺 BP-optimised</span>
+          <span class="pill accent-amber">🇶🇦 Doha pantry</span>
+        </div>
+      </div>
+      <div class="ring-card">
+        <div class="ring-wrap">
+          <div class="ring">
+            <div class="ring-inner">
+              <div class="big">2,114</div>
+              <div class="small">kcal · daily</div>
+            </div>
+          </div>
+        </div>
+        <div class="ring-legend">
+          <div><span class="swatch p"></span> 191 g protein</div>
+          <div><span class="swatch f"></span> 70 g fat</div>
+          <div><span class="swatch c"></span> 180 g carbs</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ TARGETS ============ -->
+<section id="targets">
+  <div class="wrap">
+    <div class="eyebrow">The Numbers</div>
+    <h2>What every day is sized for</h2>
+    <p class="lead" style="margin: 14px 0 28px;">The deficit is moderate (517 kcal/day from a measured TDEE of 2,631). Sustainable, recomp-friendly, and not so aggressive that training quality or recovery suffer.</p>
+    <div class="grid-3">
+      <div class="rule-card">
+        <div class="num">191g</div>
+        <h4>Protein</h4>
+        <p>2.2 g/kg — protects lean mass through the cut and gives the daily MPS hits to drive recomposition.</p>
+      </div>
+      <div class="rule-card">
+        <div class="num">70g</div>
+        <h4>Fat</h4>
+        <p>0.81 g/kg — sits above the testosterone floor (~0.7 g/kg). Mostly olive oil, fatty fish, nuts &amp; seeds.</p>
+      </div>
+      <div class="rule-card">
+        <div class="num">180g</div>
+        <h4>Carbs</h4>
+        <p>2.08 g/kg — trimmed but training-functional. Front-loaded around runs &amp; gym sessions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RULES ============ -->
+<section id="rules">
+  <div class="wrap">
+    <div class="eyebrow">The Layered Rules</div>
+    <h2>Recomp on top, blood pressure underneath</h2>
+    <p class="lead" style="margin: 14px 0 32px;">Hit the macros up top — and the food choices below make sure the BP needle moves in the right direction at the same time.</p>
+    <div class="grid-3">
+      <div class="rule-card">
+        <div class="num">1.</div>
+        <h4>Sodium ≤ 1,500 mg/day</h4>
+        <p>DASH-strict. Hidden salt lives in bread, cheese, sauces &amp; restaurant meals. Rinse every can.</p>
+      </div>
+      <div class="rule-card">
+        <div class="num">2.</div>
+        <h4>Potassium ≥ 4,000 mg/day</h4>
+        <p>The single strongest dietary BP lever. Potato w/ skin, sweet potato, banana, beans, leafy greens, yogurt.</p>
+      </div>
+      <div class="rule-card">
+        <div class="num">3.</div>
+        <h4>Magnesium ≥ 400 mg/day</h4>
+        <p>Vascular relaxation. Almonds, pumpkin seeds, spinach, oats, 85% dark chocolate.</p>
+      </div>
+      <div class="rule-card">
+        <div class="num">4.</div>
+        <h4>Nitrate hit, daily</h4>
+        <p>Beetroot OR 2× servings of rocket / spinach / beet greens. NO pathway → arterial dilation.</p>
+      </div>
+      <div class="rule-card">
+        <div class="num">5.</div>
+        <h4>Omega-3 ≥ 2 g EPA+DHA/day</h4>
+        <p>Fatty fish 3–4×/week. Sardines &amp; salmon do the heavy lifting.</p>
+      </div>
+      <div class="rule-card">
+        <div class="num">6.</div>
+        <h4>Saturated fat ≤ 15 g/day</h4>
+        <p>The endothelial trade-off. Steak limited to 1×/week, no aged cheeses, butter on the bench.</p>
+      </div>
+      <div class="rule-card">
+        <div class="num">7.</div>
+        <h4>Fibre ≥ 35 g/day</h4>
+        <p>Gut microbiome → SCFAs → BP. Lentils, oats, berries, leafy greens stack into this naturally.</p>
+      </div>
+      <div class="rule-card">
+        <div class="num">8.</div>
+        <h4>No aged cheeses</h4>
+        <p>Blue, parmesan, feta, aged gouda — high tyramine + high sodium. Fresh cheese only (cottage, ricotta, fresh mozzarella).</p>
+      </div>
+      <div class="rule-card">
+        <div class="num">9.</div>
+        <h4>Caffeine ≤ 2 cups, before 12:00</h4>
+        <p>Doesn't push BP long-term but the afternoon dose disrupts sleep, which does. Sleep is a BP lever too.</p>
+      </div>
+      <div class="rule-card">
+        <div class="num">10.</div>
+        <h4>Hydrate to 3 L/day</h4>
+        <p>+500–750 ml on run days. No salt in water (hypertension). Coconut water for post-run electrolytes.</p>
+      </div>
+      <div class="rule-card">
+        <div class="num">11.</div>
+        <h4>Coconut aminos, not soy sauce</h4>
+        <p>90% less sodium for the same umami. One swap, easy win.</p>
+      </div>
+      <div class="rule-card">
+        <div class="num">12.</div>
+        <h4>Last food 1.5+ h before bed</h4>
+        <p>Bedtime 23:00 → kitchen closes 21:30. Pre-bed casein still allowed (it's planned).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE DAY ============ -->
+<section id="day">
+  <div class="wrap">
+    <div class="eyebrow">The Day</div>
+    <h2>Five slots, one rhythm</h2>
+    <p class="lead" style="margin: 14px 0 28px;">Pick a meal for each slot from the catalog below. Daily totals land within ±5% of target.</p>
+    <table class="slot-table">
+      <thead>
+        <tr>
+          <th>Slot</th><th>When</th><th class="num">kcal</th><th class="num">P</th><th class="num">F</th><th class="num">C</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Breakfast</strong></td><td>04:30 – 06:00</td><td class="num">510</td><td class="num">42</td><td class="num">15</td><td class="num">55</td></tr>
+        <tr><td><strong>Lunch</strong></td><td>12:00 – 13:30</td><td class="num">600</td><td class="num">53</td><td class="num">18</td><td class="num">60</td></tr>
+        <tr><td><strong>Snack</strong> <span class="meal-prep" style="font-style: normal;">/ pre-workout</span></td><td>15:00 – 16:30</td><td class="num">230</td><td class="num">22</td><td class="num">6</td><td class="num">22</td></tr>
+        <tr><td><strong>Dinner</strong></td><td>18:30 – 19:30</td><td class="num">540</td><td class="num">48</td><td class="num">22</td><td class="num">30</td></tr>
+        <tr><td><strong>Pre-bed</strong> <span class="meal-prep" style="font-style: normal;">/ casein</span></td><td>21:00 – 21:30</td><td class="num">230</td><td class="num">28</td><td class="num">6</td><td class="num">15</td></tr>
+        <tr class="totals"><td>Total</td><td>—</td><td class="num">2,110</td><td class="num">193</td><td class="num">67</td><td class="num">182</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ THE WEEK ============ -->
+<section id="week">
+  <div class="wrap">
+    <div class="eyebrow">The Week</div>
+    <h2>The default rotation</h2>
+    <p class="lead" style="margin: 14px 0 28px;">2 runs · 2 cardio · 3 rest · 1 free meal. Saturday dinner is the deliberate flex slot — keeping it pre-planned is the whole point.</p>
+    <div class="week-scroll">
+      <table class="week-table">
+        <thead>
+          <tr><th>Day</th><th>Training</th><th>Breakfast</th><th>Lunch</th><th>Snack</th><th>Dinner</th><th>Pre-bed</th><th>Day kcal</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="day">Mon</td><td><span class="badge run">6 km run</span></td><td class="meal-ids"><a class="meal-link" data-meal="B1">B1</a></td><td class="meal-ids"><a class="meal-link" data-meal="L1">L1</a></td><td class="meal-ids"><a class="meal-link" data-meal="S1">S1</a> <span class="train">pre-run</span></td><td class="meal-ids"><a class="meal-link" data-meal="D2">D2</a></td><td class="meal-ids"><a class="meal-link" data-meal="P1">P1</a></td><td class="num">2,060</td></tr>
+          <tr><td class="day">Tue</td><td><span class="badge cardio">Cardio 45m</span></td><td class="meal-ids"><a class="meal-link" data-meal="B2">B2</a></td><td class="meal-ids"><a class="meal-link" data-meal="L2">L2</a></td><td class="meal-ids"><a class="meal-link" data-meal="S1">S1</a> <span class="train">pre-workout</span></td><td class="meal-ids"><a class="meal-link" data-meal="D1">D1</a></td><td class="meal-ids"><a class="meal-link" data-meal="P2">P2</a></td><td class="num">2,110</td></tr>
+          <tr><td class="day">Wed</td><td><span class="badge run">5 km run</span></td><td class="meal-ids"><a class="meal-link" data-meal="B3">B3</a></td><td class="meal-ids"><a class="meal-link" data-meal="L5">L5</a></td><td class="meal-ids"><a class="meal-link" data-meal="S2">S2</a></td><td class="meal-ids"><a class="meal-link" data-meal="D3">D3</a></td><td class="meal-ids"><a class="meal-link" data-meal="P1">P1</a></td><td class="num">2,030</td></tr>
+          <tr><td class="day">Thu</td><td><span class="badge cardio">Cardio 45m</span></td><td class="meal-ids"><a class="meal-link" data-meal="B5">B5</a></td><td class="meal-ids"><a class="meal-link" data-meal="L2">L2</a></td><td class="meal-ids"><a class="meal-link" data-meal="S1">S1</a> <span class="train">pre-workout</span></td><td class="meal-ids"><a class="meal-link" data-meal="D5">D5</a></td><td class="meal-ids"><a class="meal-link" data-meal="P1">P1</a></td><td class="num">2,100</td></tr>
+          <tr><td class="day">Fri</td><td><span class="badge rest">Rest</span></td><td class="meal-ids"><a class="meal-link" data-meal="B4">B4</a></td><td class="meal-ids"><a class="meal-link" data-meal="L4">L4</a></td><td class="meal-ids"><a class="meal-link" data-meal="S2">S2</a></td><td class="meal-ids"><a class="meal-link" data-meal="D7">D7</a></td><td class="meal-ids"><a class="meal-link" data-meal="P3">P3</a></td><td class="num">2,100</td></tr>
+          <tr><td class="day">Sat</td><td><span class="badge rest">Rest</span></td><td class="meal-ids"><a class="meal-link" data-meal="B1">B1</a></td><td class="meal-ids"><a class="meal-link" data-meal="L3">L3</a></td><td class="meal-ids"><a class="meal-link" data-meal="S4">S4</a></td><td class="meal-ids"><span class="badge flex">Free meal</span></td><td class="meal-ids"><a class="meal-link" data-meal="P1">P1</a></td><td class="num">~2,150</td></tr>
+          <tr><td class="day">Sun</td><td><span class="badge rest">Rest · batch</span></td><td class="meal-ids"><a class="meal-link" data-meal="B6">B6</a> <span class="train">smoked salmon — 1×/wk</span></td><td class="meal-ids"><a class="meal-link" data-meal="L6">L6</a> <span class="train">steak — 1×/wk</span></td><td class="meal-ids"><a class="meal-link" data-meal="S2">S2</a></td><td class="meal-ids"><a class="meal-link" data-meal="D3">D3</a></td><td class="meal-ids"><a class="meal-link" data-meal="P2">P2</a></td><td class="num">2,090</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card amber" style="margin-top: 24px;">
+      <h3>The Saturday free meal</h3>
+      <p style="color: var(--ink-soft); font-size: 0.95rem; line-height: 1.6;">One pre-planned flex meal a week is the difference between sustainable and crash-and-bonk. Stay under 1,000 kcal for the meal itself. Skip the pizza-spiral pattern (3 events in 12 days was the wake-up call). Beer/wine ≤1 drink. Hydrate +500 ml. Back on plan immediately Sunday — no spillover.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MEAL CATALOG ============ -->
+<section id="meals">
+  <div class="wrap">
+    <div class="eyebrow">The Catalog</div>
+    <h2>Thirty-two meals</h2>
+    <p class="lead" style="margin: 14px 0 28px;">Filter by slot. Each card carries the macros, the ingredient list, the prep time, and the tags that make it BP-friendly. Stars mark the daily defaults.</p>
+    <div class="filters" id="filters">
+      <button class="filter-btn active" data-slot="all">All</button>
+      <button class="filter-btn" data-slot="breakfast">Breakfast</button>
+      <button class="filter-btn" data-slot="lunch">Lunch</button>
+      <button class="filter-btn" data-slot="snack">Snack</button>
+      <button class="filter-btn" data-slot="dinner">Dinner</button>
+      <button class="filter-btn" data-slot="prebed">Pre-bed</button>
+    </div>
+    <div class="meal-grid" id="meal-grid"></div>
+  </div>
+</section>
+
+<!-- ============ COOK / BATCH ============ -->
+<section id="cook">
+  <div class="wrap">
+    <div class="eyebrow">The Cook</div>
+    <h2>Two cook sessions a week</h2>
+    <p class="lead" style="margin: 14px 0 28px;">Sunday batches 45 minutes of mostly hands-off work into 5 weeknight dinners and 4 lunches. Tuesday is a 30-minute top-up for the bolognese.</p>
+    <div class="info-grid">
+      <div class="info-card tinted">
+        <h3>Sunday · 18:00 – 18:45</h3>
+        <ol style="padding-left: 22px; color: var(--ink-soft); font-size: 0.95rem; line-height: 1.7;">
+          <li><strong>Roast 800 g chicken breast</strong> @ 200°C, 22 min (paprika + garlic + pepper, no salt). Cool, slice, fridge → 4 lunches.</li>
+          <li><strong>While chicken roasts:</strong> boil 6 baby potatoes skin-on (15 min) · cook 120 g dry quinoa (12 min) · roast bell peppers + courgette + 600 g sweet potato cubes (200°C alongside chicken).</li>
+          <li><strong>Grate 2 raw beetroots</strong> into a sealed container → keeps 5 days.</li>
+          <li><strong>Hard-boil 6 eggs</strong> (10 min while above runs).</li>
+          <li><strong>Cook 200 g dry green lentils</strong> (20 min) if doing L4 this week.</li>
+        </ol>
+      </div>
+      <div class="info-card tinted">
+        <h3>Tuesday · 18:30 – 19:00</h3>
+        <ol style="padding-left: 22px; color: var(--ink-soft); font-size: 0.95rem; line-height: 1.7;">
+          <li><strong>Turkey or lean beef bolognese</strong> — 500 g mince + no-salt passata + onion + garlic + oregano. 25 min total.</li>
+          <li>→ Feeds L2 Wednesday + Thursday lunch.</li>
+          <li>Doesn't batch past 3 days well (quality drops). Tuesday is the only active mid-week cook.</li>
+        </ol>
+      </div>
+    </div>
+    <p style="margin-top: 20px; font-size: 0.9rem; color: var(--ink-soft); text-align: center;">Fresh daily: eggs, salmon, sardines (open same day), white fish (10 min bake), yogurt / cottage cheese / Skyr from the fridge.</p>
+  </div>
+</section>
+
+<!-- ============ SHOPPING LIST ============ -->
+<section id="shop">
+  <div class="wrap">
+    <div class="eyebrow">The Shop</div>
+    <h2>One trip, Sunday morning</h2>
+    <p class="lead" style="margin: 14px 0 28px;">Tap to check items off as you load the trolley. Sections organised the way Carrefour Doha is laid out.</p>
+    <div class="shop-grid" id="shop-grid"></div>
+  </div>
+</section>
+
+<!-- ============ DOHA BRAND WATCH ============ -->
+<section id="brand">
+  <div class="wrap">
+    <div class="eyebrow">The Doha Watch</div>
+    <h2>Brand-specific notes</h2>
+    <div class="info-grid" style="margin-top: 24px;">
+      <div class="info-card">
+        <h3>Cottage cheese</h3>
+        <p style="color: var(--ink-soft); font-size: 0.95rem;">Almarai 2% is everywhere — but it runs ~400 mg Na / 100 g. Hunt for an imported low-sodium variant at Carrefour or LuLu. If Almarai is the only option, halve the pre-bed portion and add water + lemon to dilute.</p>
+      </div>
+      <div class="info-card">
+        <h3>Greek yoghurt</h3>
+        <p style="color: var(--ink-soft); font-size: 0.95rem;"><strong>Dodoni 0%</strong> is your default — already in the rotation. Avoid Dodoni 8% — sat fat climbs fast.</p>
+      </div>
+      <div class="info-card">
+        <h3>Bread</h3>
+        <p style="color: var(--ink-soft); font-size: 0.95rem;">Doha bakery sourdough is salt-loaded by default. <strong>The Sultan Center bake-in-store rye</strong> has been the lowest I've found locally — check the label on the day.</p>
+      </div>
+      <div class="info-card">
+        <h3>Stock cubes</h3>
+        <p style="color: var(--ink-soft); font-size: 0.95rem;">Skip them entirely. One cube wrecks the sodium budget for the meal. Flavour with lemon, herbs, garlic, paprika and cumin instead.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SODIUM TRACKER ============ -->
+<section id="sodium">
+  <div class="wrap">
+    <div class="eyebrow">The Tracker</div>
+    <h2>Daily sodium at a glance</h2>
+    <p class="lead" style="margin: 14px 0 28px;">A worked example for a default day (B1 → L1 → S1 → D2 → P1). 770 mg out of a 1,500 mg cap leaves clean margin for a slice of bread or an extra splash of olive on a salad. Restaurant meals are the main risk — a single Doha dish often runs 1,500–2,500 mg by itself.</p>
+    <div class="na-card">
+      <div class="na-row"><span>B1 · Yoghurt + whey + seeds</span><strong>180 mg</strong></div>
+      <div class="na-row"><span>L1 · Chicken + rice + beetroot</span><strong>110 mg</strong></div>
+      <div class="na-row"><span>S1 · Whey shake</span><strong>80 mg</strong></div>
+      <div class="na-row"><span>D2 · Chicken + cauliflower + asparagus</span><strong>120 mg</strong></div>
+      <div class="na-row"><span>P1 · Cottage cheese + berries + chia</span><strong>280 mg</strong></div>
+      <div class="na-row" style="border-top: 1px solid var(--line); padding-top: 16px; margin-top: 6px;"><span style="font-weight: 600;">Day total</span><strong style="font-family: var(--serif); font-size: 1.3rem; color: var(--sage-deep);">~770 mg</strong></div>
+      <div class="na-meter"><div style="width: 51%;"></div></div>
+      <p style="text-align: center; margin-top: 10px; font-size: 0.85rem; color: var(--ink-soft);">51% of the 1,500 mg cap · plenty of headroom</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OUT & ABOUT ============ -->
+<section id="out">
+  <div class="wrap">
+    <div class="eyebrow">Out &amp; About</div>
+    <h2>Hydration, fuelling, eating out</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>💧 Hydration</h3>
+        <ul>
+          <li><strong>3 L plain water</strong> baseline every day.</li>
+          <li><strong>+500 ml on run days</strong> (≈3.5 L total) to cover sweat losses.</li>
+          <li><strong>300–500 ml coconut water</strong> post-run — natural electrolytes, ~25 mg Na, no added sugar.</li>
+          <li>Coffee / tea count 50% toward the total. Caffeine is mildly diuretic.</li>
+          <li><strong>No salt in water.</strong> Hypertension contra-indication.</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3>🏃 Training-day fuel timing</h3>
+        <ul>
+          <li><strong>Run days:</strong> S1 (whey + banana) 30–60 min before · 250 ml coconut water during if &gt;45 min · D1 or D3 within 60 min post.</li>
+          <li><strong>Cardio days:</strong> Same as runs but a half-banana before is plenty.</li>
+          <li><strong>Rest days:</strong> Skip the pre-workout S1 — use S2, S4 or S5 instead.</li>
+          <li><strong>Gym days (unplanned):</strong> Banana 30 min before, whey shake within 60 min post.</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3>🍽️ Eating out (Doha)</h3>
+        <ul>
+          <li><strong>Grilled fish, chicken, or steak</strong> as the protein. One portion only.</li>
+          <li>Ask for <strong>"no salt, no sauce, sauce on side"</strong> — most kitchens will accommodate.</li>
+          <li><strong>Double the green vegetable side</strong>; skip the bread basket.</li>
+          <li>Pick <em>one</em> carb — not rice + naan + bread.</li>
+          <li>Water with lemon. No soft drinks, no cocktails.</li>
+          <li>Skip the cheese course entirely.</li>
+          <li>Pizza only at the Saturday free-meal slot. ≤4 slices, share if possible.</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3>📅 Review &amp; rotation</h3>
+        <ul>
+          <li><strong>Week 4 (mid-Jun):</strong> bored? swap a protein (mackerel for sardines, sirloin once for chicken). Keep the structure.</li>
+          <li><strong>Week 8 (mid-Jul):</strong> re-pull Garmin TDEE. If fat-loss on track, hold. If stalled, cut a snack before changing macros.</li>
+          <li><strong>Week 12 (mid-Aug):</strong> reassess BP trend. If still high, layer in 140 ml unsweetened beetroot juice AM.</li>
+          <li><strong>Logging below 5/7 days:</strong> simplify — same B + L + D every weekday until compliance returns. Variety is the failure mode.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>The Kitchen · v2 · 17 May 2026</p>
+    <p>Built for Bernhard &amp; Marna · Recomp + BP plan</p>
+  </div>
+</footer>
+
+<!-- ============ MODAL ============ -->
+<div class="modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-name">
+  <div class="modal">
+    <button class="modal-close" id="modal-close" aria-label="Close">×</button>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+/* ====== MEAL DATA ====== */
+const meals = [
+  // BREAKFAST
+  { id:'B1', slot:'breakfast', slotLabel:'Breakfast', star:true, name:'Greek Yoghurt Power Bowl',
+    ingredients:['250g Dodoni 0% Greek yoghurt','1 scoop ON whey (30g)','80g mixed berries','15g walnuts','1 tbsp chia (12g)','30g raw oats sprinkled'],
+    macros:{kcal:510,p:52,f:15,c:50}, na:180, satFat:2, fibre:11,
+    tags:[{t:'↑↑K⁺',c:'k'},{t:'Ca',c:'ca'},{t:'Omega-3',c:'omega'},{t:'Mg',c:'mg'},{t:'Flavonoids',c:'flav'}],
+    prep:'3 min · stir whey into yogurt smooth, top with everything',
+    steps:[
+      'Spoon 250g Dodoni 0% Greek yoghurt into a bowl.',
+      'Add 1 scoop ON whey on top. Stir vigorously with a fork until smooth (~30 seconds).',
+      'Scatter 80g mixed berries, 15g walnut halves, 1 tbsp chia and 30g raw oats on top.',
+      'Eat immediately — chia thickens fast if left.'
+    ]},
+  { id:'B2', slot:'breakfast', slotLabel:'Breakfast', name:'Overnight Oats + Whey',
+    ingredients:['60g oats','250 ml unsweetened almond milk','1 scoop whey','1 tbsp chia','1 tbsp ground flax','100g berries','10g almonds'],
+    macros:{kcal:510,p:38,f:14,c:60}, na:140, satFat:1, fibre:14,
+    tags:[{t:'Omega-3',c:'omega'},{t:'Mg',c:'mg'},{t:'Flavonoids',c:'flav'}],
+    prep:'2 min night before · jar everything except berries + almonds, fridge, add toppings AM',
+    steps:[
+      'In a 500ml jar combine: 60g oats, 1 scoop whey, 1 tbsp chia, 1 tbsp ground flax.',
+      'Pour in 250 ml unsweetened almond milk; stir to a thick batter.',
+      'Seal and fridge overnight (minimum 4 hours).',
+      'Morning: stir to loosen, top with 100g berries and 10g almonds. Eat cold.'
+    ]},
+  { id:'B3', slot:'breakfast', slotLabel:'Breakfast', name:'Eggs + Oats + Berries Stack',
+    ingredients:['2 whole eggs + 100g liquid egg whites','50g oats cooked in water','100g berries','1 tbsp ground flax','cinnamon','black coffee'],
+    macros:{kcal:480,p:35,f:14,c:52}, na:250, satFat:4, fibre:9,
+    tags:[{t:'↑K⁺',c:'k'},{t:'Omega-3',c:'omega'}],
+    prep:'8 min · boil oats 5 min, scramble eggs in 1 tsp olive oil, stack',
+    steps:[
+      'Bring 250 ml water to a boil. Add 50g rolled oats, reduce heat, simmer 5 min, stirring once.',
+      'Meanwhile beat 2 eggs + 100g egg whites with cracked pepper.',
+      'Heat 1 tsp olive oil in a non-stick pan over medium heat. Pour in eggs, scramble gently 1-2 min until just set.',
+      'Spoon oats into a bowl, plate eggs alongside.',
+      'Top oats with 100g berries, 1 tbsp ground flax, dust of cinnamon. Black coffee on the side.'
+    ]},
+  { id:'B4', slot:'breakfast', slotLabel:'Breakfast', name:'Savoury Eggs + Sourdough + Avocado',
+    ingredients:['2 whole eggs + 150g egg whites','1 slice low-sodium wholegrain sourdough','50g avocado','1 tomato','pepper + chilli flakes'],
+    macros:{kcal:460,p:38,f:22,c:30}, na:320, satFat:5, fibre:7,
+    tags:[{t:'↑K⁺',c:'k'},{t:'Mg',c:'mg'}],
+    prep:'8 min · scramble in 1 tsp olive oil, toast bread, mash avo with lemon + pepper',
+    steps:[
+      'Toast 1 slice low-sodium wholegrain sourdough.',
+      'Beat 2 whole eggs + 150g egg whites with pepper and chilli flakes.',
+      'Heat 1 tsp olive oil in a non-stick pan. Pour in eggs, scramble gently 1-2 min until just set.',
+      'Mash 50g avocado with a fork; lemon squeeze + pepper. Spread on the toast.',
+      'Plate eggs alongside. Slice tomato as a side.'
+    ]},
+  { id:'B5', slot:'breakfast', slotLabel:'Breakfast', name:'Cottage Cheese + Banana + Seeds Bowl',
+    ingredients:['250g cottage cheese 2% (low-Na brand)','1 sliced banana','80g blueberries','1 tbsp pumpkin seeds','1 tbsp chia','25g raw oats sprinkled'],
+    macros:{kcal:510,p:42,f:12,c:58}, na:360, satFat:3, fibre:10,
+    tags:[{t:'↑↑K⁺',c:'k'},{t:'Ca',c:'ca'},{t:'Mg',c:'mg'},{t:'Omega-3',c:'omega'},{t:'Flavonoids',c:'flav'}],
+    prep:'2 min · assemble',
+    steps:[
+      'Spoon 250g cottage cheese into a bowl.',
+      'Slice 1 banana over the top.',
+      'Add 80g blueberries, 1 tbsp pumpkin seeds, 1 tbsp chia.',
+      'Sprinkle 25g raw oats. Done.'
+    ]},
+  { id:'B6', slot:'breakfast', slotLabel:'Breakfast', name:'Smoked Salmon + Egg Plate',
+    ingredients:['60g smoked salmon','3 whole eggs (boiled or scrambled)','1 slice low-sodium rye','50g avocado','100g cucumber','lemon · dill'],
+    macros:{kcal:500,p:42,f:26,c:25}, na:700, satFat:6, fibre:5,
+    tags:[{t:'Omega-3',c:'omega'},{t:'↑K⁺',c:'k'},{t:'Na flag',c:'sodium-flag'}],
+    prep:'10 min · boil eggs 7 min, plate',
+    rule:'1×/week max — smoked salmon is the sodium driver. Drink +500 ml water that day; pair with low-Na lunch &amp; dinner.',
+    steps:[
+      'Place 3 eggs in a small saucepan, cover with cold water. Bring to boil, then time exactly 7 min for jammy yolks. Drain, run under cold water, peel.',
+      'Toast 1 slice low-sodium rye.',
+      'Mash 50g avocado with lemon + pepper. Smear on the rye.',
+      'Drape 60g smoked salmon over the avocado.',
+      'Halve the eggs, add to the plate. Slice 100g cucumber on the side. Lemon wedge and fresh dill.',
+      'Drink an extra 500 ml water with this meal (the sodium load needs flushing).'
+    ]},
+
+  // LUNCH
+  { id:'L1', slot:'lunch', slotLabel:'Lunch', star:true, name:'Chicken + Rice + Beetroot Bowl',
+    ingredients:['180g batched chicken breast (Sunday)','60g dry basmati rice cooked','150g broccoli steamed','100g grated raw beetroot','1 tsp olive oil · lemon'],
+    macros:{kcal:580,p:55,f:8,c:60}, na:110, satFat:2, fibre:9,
+    tags:[{t:'↑↑K⁺',c:'k'},{t:'Nitrate ✓✓',c:'nitrate'},{t:'↓Na⁺',c:'na'}],
+    prep:'5 min reheat (batched Sunday)',
+    steps:[
+      'Reheat 180g batched Sunday chicken (microwave 60 sec OR pan with a splash of water).',
+      'Reheat 60g cooked basmati rice (microwave 45 sec).',
+      'Steam 150g broccoli florets — microwave 2 min with 2 tbsp water under a plate.',
+      'Plate rice, top with chicken and broccoli. Mound 100g grated raw beetroot alongside.',
+      'Drizzle 1 tsp olive oil, squeeze of lemon, cracked pepper.'
+    ]},
+  { id:'L2', slot:'lunch', slotLabel:'Lunch', name:'Turkey Bolognese + Quinoa',
+    ingredients:['200g turkey mince w/ no-salt passata + onion + garlic + oregano','50g dry quinoa cooked','100g courgette + 100g bell pepper roasted','fresh basil'],
+    macros:{kcal:580,p:52,f:14,c:55}, na:150, satFat:3, fibre:9,
+    tags:[{t:'↑K⁺',c:'k'},{t:'Mg',c:'mg'}],
+    prep:'25 min Tue active, 5 min reheat (batches Wed + Thu)',
+    steps:[
+      'Reheat 200g cooked Tuesday turkey bolognese (microwave 90 sec OR pan with a splash of passata).',
+      'Reheat 50g cooked quinoa.',
+      'Reheat the roasted courgette + bell pepper from Sunday batch.',
+      'Plate quinoa, top with bolognese, roast veg on the side.',
+      'Tear fresh basil over the top.'
+    ]},
+  { id:'L3', slot:'lunch', slotLabel:'Lunch', name:'Tuna + Chickpea Salad',
+    ingredients:['1.5 tins tuna in water (rinsed)','100g chickpeas (rinsed)','150g rocket','100g cucumber','100g cherry tomato','50g red onion','1 tbsp olive oil · ACV · Dijon · lemon'],
+    macros:{kcal:580,p:55,f:18,c:45}, na:280, satFat:2, fibre:12,
+    tags:[{t:'↑K⁺',c:'k'},{t:'Nitrate ✓',c:'nitrate'},{t:'Mg',c:'mg'}],
+    prep:'7 min · zero-cook',
+    steps:[
+      'Drain 1.5 tins tuna in water. Rinse and drain again to wash off brine. Flake into a bowl.',
+      'Drain ½ tin chickpeas, rinse thoroughly under cold water. Add to bowl.',
+      'Add 100g cucumber diced, 100g cherry tomatoes halved, 50g red onion thinly sliced.',
+      'In a small jar shake 1 tbsp olive oil + 1 tsp ACV + 1 tsp Dijon + lemon juice + pepper.',
+      'Pour over the salad, fold in 150g rocket last so it doesn\'t wilt.'
+    ]},
+  { id:'L4', slot:'lunch', slotLabel:'Lunch', name:'Sardine + Lentil Power Salad',
+    ingredients:['2 tins sardines in olive oil (half drained)','150g cooked green lentils','100g cucumber','100g tomato','50g red onion','parsley · lemon'],
+    macros:{kcal:590,p:50,f:22,c:45}, na:340, satFat:4, fibre:12,
+    tags:[{t:'Omega-3 ✓✓',c:'omega'},{t:'Ca ✓✓ (bones)',c:'ca'},{t:'↑K⁺',c:'k'}],
+    prep:'5 min · lentils batched Sunday',
+    steps:[
+      'Drain HALF the oil from 2 tins sardines (keep some — it\'s flavour).',
+      'In a bowl combine 150g cooked green lentils (Sunday batch), 100g cucumber diced, 100g tomato diced, 50g red onion sliced.',
+      'Lay the sardines on top — keep whole or flake gently with a fork.',
+      'Big handful of parsley torn over, lemon juice, cracked pepper.'
+    ]},
+  { id:'L5', slot:'lunch', slotLabel:'Lunch', name:'Chicken + Sweet Potato + Roast Veg',
+    ingredients:['180g batched chicken breast','200g sweet potato cubes roasted','100g broccoli · 100g bell pepper','1 tsp olive oil · cumin · paprika · garlic'],
+    macros:{kcal:580,p:55,f:10,c:60}, na:100, satFat:2, fibre:11,
+    tags:[{t:'↑↑K⁺',c:'k'},{t:'Vit A',c:'flav'},{t:'↓Na⁺',c:'na'}],
+    prep:'6 min reheat (batched Sunday)',
+    steps:[
+      'Reheat 180g batched chicken + 200g sweet potato cubes + 100g bell pepper (microwave 2 min OR pan-warm 4 min).',
+      'Steam 100g broccoli florets — microwave 2 min with a splash of water.',
+      'Plate everything, drizzle 1 tsp olive oil.',
+      'Dust with cumin + paprika + garlic powder. Squeeze of lemon.'
+    ]},
+  { id:'L6', slot:'lunch', slotLabel:'Lunch', name:'Steak Salad',
+    ingredients:['160g sirloin','200g rocket + spinach mix','100g grated raw beetroot','50g cherry tomato','1 tbsp olive oil · ACV · Dijon · cracked pepper'],
+    macros:{kcal:530,p:52,f:22,c:18}, na:120, satFat:8, fibre:7,
+    tags:[{t:'Nitrate ✓✓',c:'nitrate'},{t:'Iron',c:'flav'},{t:'Sat fat 8g',c:'satfat'}],
+    prep:'12 min · pan-sear no salt, rest, slice',
+    rule:'1×/week max — pair with a low-fat dinner (D3 or D5).',
+    steps:[
+      'Take 160g sirloin out of the fridge 15 min before cooking — bringing to room temp gives a better crust.',
+      'Pat dry with paper towel. Crack pepper on both sides. NO salt — let the meat speak.',
+      'Heat a dry skillet until smoking hot. Sear 3 min one side, flip, 2-3 min the other for medium-rare.',
+      'Rest on a board 5 min. Slice across the grain.',
+      'In a bowl toss 200g rocket+spinach with 1 tbsp olive oil + 1 tsp ACV + 1 tsp Dijon.',
+      'Plate greens, fan the steak slices on top, add 100g grated raw beetroot + 50g halved cherry tomatoes.'
+    ]},
+  { id:'L7', slot:'lunch', slotLabel:'Lunch', name:'White Fish + Rice + Greens',
+    ingredients:['200g cod or hake baked w/ lemon','60g dry basmati rice cooked','100g spinach wilted','100g cherry tomato','50g chickpeas (rinsed) · paprika'],
+    macros:{kcal:560,p:50,f:8,c:65}, na:140, satFat:1, fibre:8,
+    tags:[{t:'↑K⁺',c:'k'},{t:'↓Na⁺',c:'na'}],
+    prep:'15 min',
+    steps:[
+      'Preheat oven 200°C. Place 200g cod or hake on a lined tray; squeeze lemon, dust paprika.',
+      'Bake 10-12 min until the fish flakes easily and is opaque through.',
+      'Meanwhile reheat 60g cooked basmati rice.',
+      'Wilt 100g spinach in a pan with a splash of water — 1 min, no more.',
+      'Plate rice, top with fish, spinach, halved cherry tomatoes, rinsed chickpeas. Lemon wedge.'
+    ]},
+  { id:'L8', slot:'lunch', slotLabel:'Lunch', name:'Lean Beef + Quinoa Bowl',
+    ingredients:['180g 5% lean beef mince w/ no-salt passata + onion','50g dry quinoa','100g spinach · 100g bell pepper','cumin · pepper'],
+    macros:{kcal:590,p:54,f:16,c:50}, na:120, satFat:5, fibre:8,
+    tags:[{t:'Iron',c:'flav'},{t:'↑K⁺',c:'k'},{t:'Mg',c:'mg'}],
+    prep:'20 min fresh, 5 min reheat',
+    steps:[
+      'Brown 180g lean beef mince in a non-stick pan over medium-high heat — no oil, the fat renders out. 4 min.',
+      'Add 50g chopped onion, cook 2 min until softening.',
+      'Pour in ½ tin no-salt passata, stir, simmer 6-8 min until thickened.',
+      'Meanwhile reheat 50g cooked quinoa.',
+      'Wilt 100g spinach in a separate pan with a splash of water 1 min. Dice 100g bell pepper raw.',
+      'Plate quinoa, top with mince, wilted spinach, raw bell pepper. Dust cumin + pepper.'
+    ]},
+
+  // SNACK
+  { id:'S1', slot:'snack', slotLabel:'Snack', star:true, name:'Whey + Banana Shake',
+    ingredients:['1 scoop whey','1 small banana','200 ml water (or 100 ml unsweetened almond milk)'],
+    macros:{kcal:220,p:26,f:2,c:28}, na:80, satFat:1, fibre:3,
+    tags:[{t:'↑K⁺',c:'k'},{t:'Pre-workout',c:'omega'}],
+    prep:'2 min · blend',
+    steps:[
+      'Add 1 scoop whey + 1 small banana + 200 ml water (or 100 ml almond milk) to a shaker or blender.',
+      'Shake or blend 30 sec until smooth.',
+      'Drink within 60 min of training (pre or post).'
+    ]},
+  { id:'S2', slot:'snack', slotLabel:'Snack', name:'Skyr + Berries + Pumpkin Seeds',
+    ingredients:['200g 0% Skyr','80g berries','10g pumpkin seeds'],
+    macros:{kcal:200,p:24,f:5,c:18}, na:70, satFat:1, fibre:4,
+    tags:[{t:'Mg',c:'mg'},{t:'Ca',c:'ca'},{t:'Flavonoids',c:'flav'}],
+    prep:'1 min',
+    steps:[
+      'Spoon 200g 0% Skyr into a bowl.',
+      'Top with 80g berries and 10g pumpkin seeds.'
+    ]},
+  { id:'S3', slot:'snack', slotLabel:'Snack', name:'Boiled Eggs + Apple + Almonds',
+    ingredients:['2 hard-boiled eggs (batched Sunday)','1 apple','10 almonds'],
+    macros:{kcal:240,p:16,f:14,c:22}, na:140, satFat:3, fibre:6,
+    tags:[{t:'↑K⁺',c:'k'},{t:'Mg',c:'mg'}],
+    prep:'0 min · grab and go',
+    note:'Lower-protein slot — use when lunch and dinner protein are already high.',
+    steps:[
+      'Grab 2 hard-boiled eggs from Sunday batch. Peel as you eat.',
+      '1 apple, sliced if you prefer.',
+      '10 almonds alongside.'
+    ]},
+  { id:'S4', slot:'snack', slotLabel:'Snack', name:'Kefir + Flax + Berry Smoothie',
+    ingredients:['250 ml plain kefir','1 tbsp ground flax','80g frozen berries','(optional ½ scoop whey for +12g P)'],
+    macros:{kcal:260,p:24,f:5,c:28}, na:90, satFat:2, fibre:5,
+    tags:[{t:'Probiotic',c:'omega'},{t:'Omega-3',c:'omega'},{t:'Ca',c:'ca'},{t:'Flavonoids',c:'flav'}],
+    prep:'2 min · blend',
+    steps:[
+      'Add 250 ml plain kefir, 1 tbsp ground flax, 80g frozen berries to a blender.',
+      'Add ½ scoop whey if it\'s a low-protein day.',
+      'Blend 30 sec until smooth. Pour and drink.'
+    ]},
+  { id:'S5', slot:'snack', slotLabel:'Snack', name:'Cottage Cheese + Cucumber + Tomato',
+    ingredients:['150g cottage cheese 2% (low-Na)','1 cucumber','100g cherry tomato','cracked pepper · fresh dill'],
+    macros:{kcal:170,p:20,f:4,c:12}, na:280, satFat:2, fibre:3,
+    tags:[{t:'↑K⁺',c:'k'},{t:'Ca',c:'ca'}],
+    prep:'2 min',
+    steps:[
+      'Spoon 150g low-sodium cottage cheese onto a plate.',
+      'Slice 1 cucumber, halve 100g cherry tomatoes.',
+      'Arrange alongside the cottage cheese.',
+      'Crack pepper, snip fresh dill over the top.'
+    ]},
+  { id:'S6', slot:'snack', slotLabel:'Snack', name:'Dates + Walnuts',
+    ingredients:['3 Medjool dates','15g walnuts'],
+    macros:{kcal:220,p:4,f:11,c:35}, na:5, satFat:1, fibre:4,
+    tags:[{t:'↑K⁺',c:'k'},{t:'Omega-3',c:'omega'},{t:'Mg',c:'mg'}],
+    prep:'0 min',
+    note:'Use as pre-workout fuel when you need fast carbs — pair with S1 to hit protein.',
+    steps:[
+      '3 Medjool dates — pit them yourself if they\'re unpitted.',
+      '15g walnut halves alongside.',
+      'Pair with S1 (whey shake) if you also need protein.'
+    ]},
+
+  // DINNER
+  { id:'D1', slot:'dinner', slotLabel:'Dinner', star:true, name:'Salmon + Sweet Potato + Beet + Rocket',
+    ingredients:['150g salmon','200g sweet potato microwaved (skin on)','100g grated raw beetroot','80g rocket','1 tsp olive oil · lemon · dill'],
+    macros:{kcal:540,p:38,f:22,c:45}, na:110, satFat:5, fibre:10,
+    tags:[{t:'Omega-3 ✓✓',c:'omega'},{t:'Nitrate ✓✓',c:'nitrate'},{t:'↑↑K⁺',c:'k'},{t:'Mg',c:'mg'}],
+    prep:'15 min · microwave SP 5 min, pan-sear salmon 7 min',
+    note:'⭐ BP-optimal — aim for 2–3×/week.',
+    steps:[
+      'Pierce 200g sweet potato a few times with a fork. Microwave 5 min on high (turn halfway through).',
+      'Pat 150g salmon dry with paper towel. Season with pepper and lemon zest.',
+      'Heat a non-stick pan over medium-high heat. Add salmon skin-side down. Press flat with a spatula 4 min until the skin crisps.',
+      'Flip the salmon, cook another 3 min until the centre is just opaque.',
+      'Split open the sweet potato, drizzle ½ tsp olive oil inside.',
+      'Plate the sweet potato, lay salmon next to it. Top with 80g rocket and 100g grated raw beetroot. Lemon wedge and fresh dill.'
+    ]},
+  { id:'D2', slot:'dinner', slotLabel:'Dinner', name:'Baked Chicken + Cauliflower Rice + Asparagus',
+    ingredients:['200g chicken thigh (skinless) OR breast','200g riced cauliflower','150g asparagus','1 tsp olive oil · garlic · oregano · lemon'],
+    macros:{kcal:480,p:55,f:20,c:15}, na:120, satFat:5, fibre:8,
+    tags:[{t:'↑K⁺',c:'k'},{t:'↓Na⁺',c:'na'}],
+    prep:'22 min · bake chicken 200°C 20 min',
+    note:'Lowest-carb dinner — best on rest days when lunch carbs are higher.',
+    steps:[
+      'Preheat oven 200°C. Line a tray with parchment.',
+      'Place 200g chicken (thigh or breast) on the tray with 150g asparagus alongside. Coat with ½ tsp olive oil, minced garlic, oregano, pepper.',
+      'Bake 18-20 min until the chicken juices run clear and the asparagus is tender-crisp.',
+      'Heat ½ tsp olive oil in a pan over medium heat. Sauté 200g riced cauliflower with minced garlic 4 min, stirring.',
+      'Plate the cauliflower rice, top with chicken, asparagus on the side. Lemon over everything.'
+    ]},
+  { id:'D3', slot:'dinner', slotLabel:'Dinner', name:'White Fish + Potato + Broccoli + Garlic',
+    ingredients:['200g cod or hake','200g baby potato boiled skin on','150g steamed broccoli','1 tsp olive oil · garlic · lemon · parsley'],
+    macros:{kcal:480,p:50,f:8,c:50}, na:110, satFat:1, fibre:7,
+    tags:[{t:'↑↑K⁺',c:'k'},{t:'↓Na⁺',c:'na'}],
+    prep:'20 min',
+    steps:[
+      'Halve 200g baby potatoes (skin on). Boil in unsalted water 12-15 min until fork-tender.',
+      'Steam 150g broccoli florets 4 min.',
+      'Pat 200g cod/hake dry. Heat 1 tsp olive oil in a non-stick pan over medium-high heat.',
+      'Sear the fish 3-4 min per side with minced garlic — flip once, gently. The fish should flake when ready.',
+      'Smash potatoes lightly with a fork, drizzle ½ tsp olive oil.',
+      'Plate potatoes, broccoli, fish on top. Lemon, fresh parsley to finish.'
+    ]},
+  { id:'D4', slot:'dinner', slotLabel:'Dinner', name:'Sardines + Rye + Big Mediterranean Salad',
+    ingredients:['2 tins sardines in olive oil (half drained)','1 slice low-sodium rye','150g rocket','100g cucumber','100g tomato','50g red onion','50g avocado','lemon · pepper'],
+    macros:{kcal:560,p:45,f:26,c:32}, na:380, satFat:5, fibre:8,
+    tags:[{t:'Omega-3 ✓✓',c:'omega'},{t:'Ca ✓✓',c:'ca'},{t:'↑K⁺',c:'k'},{t:'Nitrate ✓',c:'nitrate'}],
+    prep:'6 min',
+    steps:[
+      'Toast 1 slice low-sodium rye.',
+      'Drain half the oil from 2 tins sardines in olive oil (keep half — it\'s flavour).',
+      'Mash sardines lightly onto the rye with lemon and pepper.',
+      'In a bowl toss 150g rocket + 100g cucumber + 100g tomato + 50g red onion + 50g sliced avocado with a squeeze of lemon and cracked pepper.',
+      'Plate sardine toast + salad alongside.'
+    ]},
+  { id:'D5', slot:'dinner', slotLabel:'Dinner', name:'Turkey Stir-Fry + Brown Rice',
+    ingredients:['200g turkey breast mince','100g broccoli · 100g bell pepper · 50g mushrooms','40g dry brown rice','1 tsp olive oil · garlic · ginger · 1 tsp coconut aminos'],
+    macros:{kcal:520,p:50,f:12,c:50}, na:140, satFat:2, fibre:7,
+    tags:[{t:'↑K⁺',c:'k'},{t:'↓Na⁺ (aminos)',c:'na'}],
+    prep:'18 min',
+    steps:[
+      'Start 40g dry brown rice cooking first — it takes 15 min.',
+      'Heat 1 tsp olive oil in a wok or large pan over high heat.',
+      'Add minced garlic + ginger; stir-fry 30 sec until fragrant.',
+      'Add 200g turkey mince, break up with a spatula, cook 4 min until no longer pink.',
+      'Add 100g broccoli florets + 100g sliced bell pepper + 50g sliced mushrooms; stir-fry 4-5 min until veg is tender-crisp.',
+      'Splash 1 tsp coconut aminos at the end; toss to coat.',
+      'Serve over the brown rice.'
+    ]},
+  { id:'D6', slot:'dinner', slotLabel:'Dinner', name:'Steak + Roast Veg + Greens',
+    ingredients:['160g sirloin','200g roasted courgette + bell pepper + red onion','100g rocket + spinach','1 tsp olive oil · garlic · cracked pepper'],
+    macros:{kcal:510,p:48,f:25,c:22}, na:120, satFat:8, fibre:8,
+    tags:[{t:'Nitrate ✓',c:'nitrate'},{t:'Iron',c:'flav'},{t:'Sat fat 8g',c:'satfat'}],
+    prep:'25 min',
+    rule:'1×/week max — pairs with non-L6 days.',
+    steps:[
+      'Preheat oven 200°C. Cube 1 courgette + 1 bell pepper + ½ red onion. Toss with ½ tsp olive oil, minced garlic, pepper.',
+      'Spread on a tray, roast 20 min until edges char.',
+      'While veg roasts, take 160g sirloin out of the fridge.',
+      'Pat steak dry, crack pepper both sides. NO salt.',
+      'Heat a dry skillet smoking hot. Sear 3 min one side, flip, 2-3 min the other for medium-rare.',
+      'Rest 5 min, slice across the grain.',
+      'Plate 100g rocket+spinach, top with roasted veg, fan steak slices over.'
+    ]},
+  { id:'D7', slot:'dinner', slotLabel:'Dinner', name:'Lentil & Chickpea Curry + Chicken Side',
+    ingredients:['100g dry red lentils','½ tin chickpeas (rinsed)','1 tin no-salt chopped tomato','200g spinach','50g onion · garlic · ginger','turmeric + cumin + paprika','1 tsp olive oil','100g batched chicken on the side'],
+    macros:{kcal:560,p:52,f:8,c:60}, na:150, satFat:2, fibre:18,
+    tags:[{t:'↑↑K⁺',c:'k'},{t:'Nitrate ✓',c:'nitrate'},{t:'Mg',c:'mg'},{t:'Fibre 18g',c:'k'}],
+    prep:'25 min',
+    steps:[
+      'Heat 1 tsp olive oil in a deep pan. Sauté 50g chopped onion + minced garlic + grated ginger 3 min.',
+      'Add 1 tsp turmeric + 1 tsp cumin + ½ tsp paprika. Toast 30 sec to bloom the spices.',
+      'Add 100g dry red lentils + 1 tin no-salt chopped tomato + 400 ml water. Stir and bring to boil.',
+      'Reduce heat, simmer 15 min until lentils break down and thicken.',
+      'Stir in ½ tin rinsed chickpeas + 200g spinach. Cook 3 min more until spinach wilts.',
+      'Plate; serve 100g warmed batched chicken on the side for the protein hit.'
+    ]},
+  { id:'D8', slot:'dinner', slotLabel:'Dinner', name:'Egg White Veggie Scramble + Sourdough',
+    ingredients:['200g liquid egg whites + 2 whole eggs','100g spinach · 100g mushroom · 50g bell pepper','1 slice low-Na sourdough','1 tsp olive oil · pepper'],
+    macros:{kcal:460,p:42,f:18,c:30}, na:280, satFat:4, fibre:7,
+    tags:[{t:'↑K⁺',c:'k'},{t:'Nitrate ✓',c:'nitrate'}],
+    prep:'10 min · sauté veg, pour in eggs',
+    steps:[
+      'Toast 1 slice low-sodium sourdough.',
+      'Heat 1 tsp olive oil in a non-stick pan over medium heat.',
+      'Sauté 100g sliced mushrooms 3 min until golden. Add 50g diced bell pepper 1 min.',
+      'Add 100g spinach, cook 30 sec until just wilted.',
+      'Beat 2 whole eggs + 200g egg whites with pepper. Pour into the pan, stir gently 2 min until just set.',
+      'Plate alongside the toast.'
+    ]},
+
+  // PRE-BED
+  { id:'P1', slot:'prebed', slotLabel:'Pre-bed', star:true, name:'Cottage Cheese + Berries + Chia',
+    ingredients:['200g cottage cheese 2% (low-Na)','80g berries','1 tbsp chia'],
+    macros:{kcal:210,p:28,f:6,c:15}, na:280, satFat:3, fibre:5,
+    tags:[{t:'Casein',c:'ca'},{t:'Omega-3',c:'omega'},{t:'Ca',c:'ca'}],
+    prep:'1 min · slow protein for overnight MPS',
+    steps:[
+      'Spoon 200g low-sodium cottage cheese into a bowl.',
+      'Top with 80g berries and 1 tbsp chia.',
+      'Eat 21:00-21:30 latest — slow casein supports overnight muscle protein synthesis.'
+    ]},
+  { id:'P2', slot:'prebed', slotLabel:'Pre-bed', name:'Greek Yoghurt + ½ Whey + Cinnamon',
+    ingredients:['200g 0% Greek yoghurt','½ scoop whey','1 tsp cinnamon','30g berries'],
+    macros:{kcal:210,p:30,f:2,c:12}, na:110, satFat:0, fibre:2,
+    tags:[{t:'Casein',c:'ca'},{t:'Ca',c:'ca'}],
+    prep:'1 min',
+    steps:[
+      'Spoon 200g 0% Greek yoghurt into a bowl.',
+      'Stir in ½ scoop whey + 1 tsp cinnamon until smooth.',
+      'Top with 30g berries.'
+    ]},
+  { id:'P3', slot:'prebed', slotLabel:'Pre-bed', name:'Casein Mug Cake',
+    ingredients:['30g casein powder','1 egg white','1 tbsp oats','1 tsp cocoa','cinnamon','50 ml water','½ tsp honey'],
+    macros:{kcal:200,p:28,f:3,c:20}, na:120, satFat:1, fibre:2,
+    tags:[{t:'Casein',c:'ca'},{t:'Flavonoids (cocoa)',c:'flav'}],
+    prep:'3 min · mix in mug, microwave 90 s',
+    steps:[
+      'In a microwave-safe mug whisk: 30g casein powder, 1 egg white, 1 tbsp oats, 1 tsp cocoa, ½ tsp cinnamon, 50 ml water, ½ tsp honey.',
+      'Whisk until smooth — no dry pockets.',
+      'Microwave on HIGH for 90 sec. It\'ll rise and set like a sponge.',
+      'Let cool 1 min before eating (the centre will be molten otherwise).'
+    ]},
+  { id:'P4', slot:'prebed', slotLabel:'Pre-bed', name:'Skyr + Almond Butter + Cinnamon',
+    ingredients:['200g 0% Skyr','15g natural almond butter (unsalted)','cinnamon'],
+    macros:{kcal:220,p:24,f:10,c:12}, na:80, satFat:1, fibre:2,
+    tags:[{t:'Casein',c:'ca'},{t:'Mg',c:'mg'},{t:'Ca',c:'ca'}],
+    prep:'1 min',
+    steps:[
+      'Spoon 200g 0% Skyr into a bowl.',
+      'Swirl in 15g unsalted natural almond butter.',
+      'Dust with cinnamon. Done.'
+    ]},
+];
+
+/* ====== RENDER MEALS ====== */
+function renderMeals(filter='all') {
+  const grid = document.getElementById('meal-grid');
+  const filtered = filter === 'all' ? meals : meals.filter(m => m.slot === filter);
+  grid.innerHTML = filtered.map(m => {
+    const total = m.macros.p*4 + m.macros.f*9 + m.macros.c*4;
+    const pPct = (m.macros.p*4/total*100).toFixed(0);
+    const fPct = (m.macros.f*9/total*100).toFixed(0);
+    const cPct = (m.macros.c*4/total*100).toFixed(0);
+    return `
+      <article class="meal" data-slot="${m.slot}" data-id="${m.id}" tabindex="0" role="button" aria-label="View recipe for ${m.name}">
+        <div class="meal-header">
+          <div>
+            <div class="meal-id">${m.id} ${m.star ? '<span class="star">★</span>' : ''}</div>
+            <div class="meal-name">${m.name}</div>
+          </div>
+          <span class="slot-tag">${m.slotLabel}</span>
+        </div>
+        <div class="macro-bar">
+          <div class="mb-p" style="width:${pPct}%"></div>
+          <div class="mb-f" style="width:${fPct}%"></div>
+          <div class="mb-c" style="width:${cPct}%"></div>
+        </div>
+        <div class="macros">
+          <div class="macro kcal"><strong>${m.macros.kcal}</strong><span>kcal</span></div>
+          <div class="macro p"><strong>${m.macros.p}g</strong><span>protein</span></div>
+          <div class="macro f"><strong>${m.macros.f}g</strong><span>fat</span></div>
+          <div class="macro c"><strong>${m.macros.c}g</strong><span>carbs</span></div>
+        </div>
+        <div class="ingredients">
+          ${m.ingredients.map(i => '· ' + i).join('<br>')}
+        </div>
+        <div class="tag-row">
+          ${m.tags.map(t => `<span class="tag ${t.c}">${t.t}</span>`).join('')}
+          ${m.na ? `<span class="tag">Na ${m.na}mg</span>` : ''}
+        </div>
+        <div class="meal-prep"><strong>Prep:</strong> ${m.prep}</div>
+        ${m.rule ? `<div class="meal-rule">${m.rule}</div>` : ''}
+        ${m.note ? `<div class="meal-note">${m.note}</div>` : ''}
+      </article>
+    `;
+  }).join('');
+}
+
+document.getElementById('filters').addEventListener('click', e => {
+  if (e.target.matches('.filter-btn')) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    renderMeals(e.target.dataset.slot);
+  }
+});
+
+/* ====== MODAL ====== */
+const modal = document.getElementById('modal');
+const modalBody = document.getElementById('modal-body');
+const modalClose = document.getElementById('modal-close');
+let lastFocus = null;
+
+function openMeal(id) {
+  const m = meals.find(x => x.id === id);
+  if (!m) return;
+  lastFocus = document.activeElement;
+  const total = m.macros.p*4 + m.macros.f*9 + m.macros.c*4;
+  const pPct = (m.macros.p*4/total*100).toFixed(0);
+  const fPct = (m.macros.f*9/total*100).toFixed(0);
+  const cPct = (m.macros.c*4/total*100).toFixed(0);
+  modalBody.innerHTML = `
+    <div class="modal-head">
+      <div class="meal-id">${m.id} ${m.star ? '<span class="star">★</span>' : ''}</div>
+      <div class="meal-name" id="modal-name">${m.name}</div>
+      <div><span class="slot-tag">${m.slotLabel}</span></div>
+    </div>
+    <div class="macro-bar">
+      <div class="mb-p" style="width:${pPct}%"></div>
+      <div class="mb-f" style="width:${fPct}%"></div>
+      <div class="mb-c" style="width:${cPct}%"></div>
+    </div>
+    <div class="macros" style="margin-top:10px">
+      <div class="macro kcal"><strong>${m.macros.kcal}</strong><span>kcal</span></div>
+      <div class="macro p"><strong>${m.macros.p}g</strong><span>protein</span></div>
+      <div class="macro f"><strong>${m.macros.f}g</strong><span>fat</span></div>
+      <div class="macro c"><strong>${m.macros.c}g</strong><span>carbs</span></div>
+    </div>
+    <div class="modal-section">
+      <h4>Ingredients</h4>
+      <div class="ingredients">${m.ingredients.map(i => '· ' + i).join('<br>')}</div>
+    </div>
+    <div class="modal-section">
+      <h4>Method</h4>
+      <ol class="modal-steps">
+        ${(m.steps || []).map(s => `<li>${s}</li>`).join('')}
+      </ol>
+    </div>
+    <div class="modal-section">
+      <h4>Tags</h4>
+      <div class="tag-row">
+        ${m.tags.map(t => `<span class="tag ${t.c}">${t.t}</span>`).join('')}
+        ${m.na ? `<span class="tag">Na ${m.na}mg</span>` : ''}
+        ${m.satFat != null ? `<span class="tag">Sat fat ${m.satFat}g</span>` : ''}
+        ${m.fibre != null ? `<span class="tag">Fibre ${m.fibre}g</span>` : ''}
+      </div>
+    </div>
+    ${m.rule ? `<div class="modal-section"><div class="meal-rule">${m.rule}</div></div>` : ''}
+    ${m.note ? `<div class="modal-section"><div class="meal-note">${m.note}</div></div>` : ''}
+    <div class="modal-section">
+      <div class="modal-meta"><span><strong>Prep:</strong> ${m.prep}</span></div>
+    </div>
+  `;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  modalClose.focus();
+}
+
+function closeMeal() {
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+  if (lastFocus) lastFocus.focus();
+}
+
+modalClose.addEventListener('click', closeMeal);
+modal.addEventListener('click', e => { if (e.target === modal) closeMeal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) closeMeal(); });
+
+// Meal-card click → open modal
+document.getElementById('meal-grid').addEventListener('click', e => {
+  const card = e.target.closest('.meal');
+  if (card) openMeal(card.dataset.id);
+});
+// Keyboard activation for meal cards
+document.getElementById('meal-grid').addEventListener('keydown', e => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('.meal')) {
+    e.preventDefault();
+    openMeal(e.target.dataset.id);
+  }
+});
+
+// Week-table meal-link clicks → open modal
+document.querySelectorAll('.meal-link').forEach(el => {
+  el.setAttribute('role', 'button');
+  el.setAttribute('tabindex', '0');
+  el.addEventListener('click', e => { e.preventDefault(); openMeal(el.dataset.meal); });
+  el.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openMeal(el.dataset.meal); }
+  });
+});
+
+// Count meals per slot for filter labels
+['breakfast','lunch','snack','dinner','prebed'].forEach(s => {
+  const btn = document.querySelector(`.filter-btn[data-slot="${s}"]`);
+  const count = meals.filter(m => m.slot === s).length;
+  btn.innerHTML = btn.textContent + ` <span class="count">${count}</span>`;
+});
+document.querySelector('.filter-btn[data-slot="all"]').innerHTML += ` <span class="count">${meals.length}</span>`;
+
+renderMeals();
+
+/* ====== SHOPPING LIST ====== */
+const shopList = [
+  { title:'Protein', items:[
+    '800g chicken breast (skinless)',
+    '400g lean beef mince (5%)',
+    '400g turkey breast mince',
+    '300g sirloin (split L6 + D6)',
+    '2× 150g salmon fillets (frozen OK)',
+    '400g cod or hake (frozen OK)',
+    '60g smoked salmon (Sunday only)',
+    '4 tins tuna in water',
+    '4 tins sardines in olive oil, no salt added',
+    '12 large eggs + 500g liquid egg whites',
+    '2× 500g Dodoni 0% Greek yoghurt',
+    '2× 500g cottage cheese 2% (check Na ≤300 mg/100g)',
+    '500g 0% Skyr',
+    '500 ml plain kefir',
+    'ON whey (refill as needed)',
+    'Casein powder (if using P3)',
+  ]},
+  { title:'Carbs & grains', items:[
+    'Basmati rice (1 kg)',
+    'Brown rice (500g)',
+    'Quinoa (500g)',
+    'Rolled oats (1 kg)',
+    'Red lentils (500g dry)',
+    'Green lentils (500g dry or 2 tins no-salt)',
+    'Chickpeas (2 tins no-salt)',
+    'Wholegrain sourdough / rye (≤200 mg Na/slice)',
+    '6 baby potatoes',
+    '2 large sweet potatoes',
+  ]},
+  { title:'Vegetables (BP medicine)', items:[
+    '2 raw beetroots',
+    '200g rocket',
+    '200g baby spinach',
+    '1 big head broccoli',
+    '1 cauliflower (or pre-riced)',
+    '1 bunch asparagus',
+    '4 bell peppers (mixed)',
+    '2 courgettes',
+    '200g mushrooms',
+    '4 cucumbers',
+    '500g cherry tomatoes',
+    '2 large tomatoes',
+    '4 red onions',
+    '1 head garlic',
+    '1 piece ginger',
+    '3-pack lemons',
+    'Fresh herbs: parsley, dill, oregano, basil',
+    '1 avocado',
+  ]},
+  { title:'Fruit', items:[
+    '4 bananas',
+    '4 apples',
+    '2 punnets mixed berries (or 500g frozen)',
+    '3 Medjool dates (if using S6)',
+  ]},
+  { title:'Fats · nuts · seeds', items:[
+    'Extra-virgin olive oil',
+    '100g raw walnuts (unsalted)',
+    '100g raw almonds (unsalted)',
+    '100g pumpkin seeds (unsalted)',
+    '100g chia seeds',
+    '100g ground flax (fridge)',
+    '1 jar natural almond butter (1-ingredient, unsalted)',
+  ]},
+  { title:'Pantry & sauces', items:[
+    '2× no-salt-added passata',
+    '2× no-salt-added chopped tomatoes',
+    '1× unsweetened almond milk',
+    '500 ml apple cider vinegar',
+    'Dijon mustard (check label — no added salt)',
+    'Coconut aminos (NOT soy sauce)',
+    'Spices: cinnamon, paprika, cumin, turmeric, oregano, chilli flakes, black pepper, garlic powder',
+    '500g 85%+ dark chocolate',
+    '6× 330 ml coconut water (Coco Vita)',
+  ]},
+];
+const shopGrid = document.getElementById('shop-grid');
+shopGrid.innerHTML = shopList.map((cat, ci) => `
+  <div class="shop-card">
+    <h3>${cat.title}</h3>
+    <ul class="shop-list">
+      ${cat.items.map((item, ii) => `
+        <li>
+          <label>
+            <input type="checkbox" data-cat="${ci}" data-i="${ii}">
+            <span>${item}</span>
+          </label>
+        </li>
+      `).join('')}
+    </ul>
+  </div>
+`).join('');
+
+// Persist checks in localStorage
+const SHOP_KEY = 'kitchen-shop-v1';
+const checks = JSON.parse(localStorage.getItem(SHOP_KEY) || '{}');
+document.querySelectorAll('.shop-list input').forEach(cb => {
+  const key = `${cb.dataset.cat}-${cb.dataset.i}`;
+  if (checks[key]) { cb.checked = true; cb.closest('li').classList.add('checked'); }
+  cb.addEventListener('change', () => {
+    checks[key] = cb.checked;
+    localStorage.setItem(SHOP_KEY, JSON.stringify(checks));
+    cb.closest('li').classList.toggle('checked', cb.checked);
+  });
+});
+</script>
+
+</body>
+</html>
